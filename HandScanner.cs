@@ -7,26 +7,34 @@ using UnityEngine.EventSystems;
 
 public class HandScanner : MonoBehaviour {
 
+    //Array solution 
     public GameObject[] solution;
 
+    // Declear variables
     [SerializeField] private Text topPanelText;
     [SerializeField] private Text bottomPanelText;
     private AudioSource audioSource;
+    
+    //sounds played when: success/ fail
     public AudioClip sfxSuccess;
     public AudioClip sfxFailure;
 
+    //IP adress of door controller - wireless requ. to unlock the door when puzzle solved
     [SerializeField] string DoorControllerIPAddress;
 
+    //array of game object : guess that player made
     [SerializeField] private GameObject[] guess;
 
     private enum ScanStatus { Idle, Scanning, Success, Failure };
     private ScanStatus scanStatus = ScanStatus.Idle;
 
+    //Touch the button
     public void onTouch(GameObject gO) {
         int finger = Input.touchCount - 1;
         guess[finger] = gO;
     }
 
+    //Release the button
     public void onRelease(GameObject gO) {
         for(int i = 0; i < guess.Length; i++) {
             if(guess[i] == gO) { guess[i] = null; }
@@ -42,6 +50,7 @@ public class HandScanner : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
+        //number of fingers needed to unlock 
         int numFingers = Input.touchCount;
 
         switch (scanStatus) {
@@ -52,6 +61,7 @@ public class HandScanner : MonoBehaviour {
                 }
                 break;
 
+                //scanning fingers 
             case ScanStatus.Scanning:
                 Debug.Log("Scanning");
                 topPanelText.text = "Scanning";
