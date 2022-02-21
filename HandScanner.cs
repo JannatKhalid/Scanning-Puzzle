@@ -86,7 +86,7 @@ public class HandScanner : MonoBehaviour {
                     scanStatus = ScanStatus.Success;
                 }
                 
-                //if fingers not matched puzzle fail!
+                //if fingers not matched - puzzle fail!
                 else 
                 {
                     Debug.Log("Failure"); //failure message
@@ -96,16 +96,21 @@ public class HandScanner : MonoBehaviour {
                     scanStatus = ScanStatus.Failure;
                 }
                 break;
+                
+                
 ////////// stopped commnting here //24:40
+           
             case ScanStatus.Success:
-                if (numFingers == 0) {
+                if (numFingers == 0) //no fingers touching screen - go back to idle screen
+                {
                     topPanelText.text = "Place Hand";
                     scanStatus = ScanStatus.Idle;
                 }
                 break;
 
             case ScanStatus.Failure:
-                if (numFingers == 0) {
+                if (numFingers == 0)  //no fingers touching screen - go back to idle screen
+                {
                     topPanelText.text = "Place Hand";
                     scanStatus = ScanStatus.Idle;
                 }
@@ -114,16 +119,22 @@ public class HandScanner : MonoBehaviour {
         }
        
     }
-
+    
+    //Puzzle solved - success 
     IEnumerator SendLockTrigger() {
         string URL = string.Concat(DoorControllerIPAddress, "/L");
+        //unlocks door - calling web page
         UnityWebRequest www = UnityWebRequest.Get(URL);
         yield return www.SendWebRequest();
 
+     //read the result - visual feed back of result
+        //if error
         if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
             Debug.Log(www.error);
             bottomPanelText.text = www.error;
         }
+        
+        //if sucess 
         else {
             // Show results as text
             Debug.Log(www.downloadHandler.text);
@@ -133,6 +144,7 @@ public class HandScanner : MonoBehaviour {
         }
     }
 
+    // ?? 28:25
     IEnumerator SendUnlockTrigger() {
         string URL = string.Concat(DoorControllerIPAddress, "/H");
         UnityWebRequest www = UnityWebRequest.Get(URL);
