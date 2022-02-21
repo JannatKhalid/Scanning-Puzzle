@@ -98,7 +98,6 @@ public class HandScanner : MonoBehaviour {
                 break;
                 
                 
-////////// stopped commnting here //24:40
            
             case ScanStatus.Success:
                 if (numFingers == 0) //no fingers touching screen - go back to idle screen
